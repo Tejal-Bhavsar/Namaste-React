@@ -1,0 +1,117 @@
+- What is `NPM`?
+ Ans. Our React app is dependant on many packages as it has diffrent functionalities,it helps publishing and 
+ downloading packages,npm allows you to install a new package from the registry.Its basically default package manager
+ for Node also.
+ 
+● - What is `Parcel/Webpack`? Why do we need it?
+ Ans. Parcel/webpack is a bundler it is a tool that lets you compile JavaScript modules,
+ also known as module bundler.Given a large number of files, it generates a single file 
+ (or a few files) that run your app.It can perform many operations,helps you bundle your resources.
+
+Parcel Features:
+HMR (Hot Module Replacement) - parcel keeps track of file changes via file watcher algorithm and renders the changes in the files
+File watcher algorithm - made with C++
+Minification
+Cleaning our code
+DEV and production Build
+Super fast building algorithm
+Image optimization
+Caching while development
+Compresses
+Compatible with older version of browser
+HTTPS in dev
+Port Number
+Consistent hashing algorithm
+Zero Configuration
+Automatic code splitting
+installation commands:
+Install:
+npm install -D parcel
+-D is used for development and as a development dependency.
+
+Parcel Commands :
+For development build:
+npx parcel <entry_point> 
+For production build :
+npx parcel build <entry_point> 
+
+● - What is `.parcel-cache`
+Ans. .parcel-cache is used by parcel(bundler) to reduce the building time. It stores information about
+your project when parcel builds it, so that when it rebuilds, it doesn't have to re-parse and re-analyze 
+everything from scratch. It's a key reason why parcel can be so fast in development mode.
+
+● - What is `npx` ?
+Ans. A package can be executable without installing the package. It is an npm package runner so if 
+any packages aren’t already installed it will install them automatically.
+
+● - What is difference between `dependencies` vs `devDependencies`
+Ans. devDependencies are modules which are only required during development, while dependencies are modules
+which are also required at runtime.
+Dependencies should contain library and framework in which your app is built on, needs to function effectively.
+such as Vue, React, Angular, Express, JQuery and etc. DevDependencies should contain modules/packages a developer
+needs during development. such as, parcel, webpack, vite, mocha. These packages are necessary only while you are
+developing your project, not necessary on production. To save a dependency as a devDependency on installation
+we need to do,
+npm install --save-dev   for dev dependencies
+
+● - What is Tree Shaking?
+Ans. Tree shaking is a term commonly used within a JavaScript context to describe the removal of dead code.
+We are using bundlers like webpack/parcels which will take care of removing the dead code when bundling multiple
+Javascript files into single files. This process is important for production ready application to have minifies 
+clean version. Parcel Tree shaking is supported for both static and dynamic import(), CommonJS and ES modules, 
+and even across languages with CSS modules. Parcel also concatenates modules into a single scope when possible,
+rather than wrapping each module in a separate function. This is called “scope hoisting”.
+
+● - What is Hot Module Replacement?
+Ans. Hot Module Replacement (HMR) improves the development experience by automatically updating modules in
+the browser at runtime without needing a whole page refresh. This means that application state can be retained
+as you change small things.
+Note: Parcel's HMR implementation supports both JavaScript and CSS assets.
+
+● - List down your favourite 5 superpowers of Parcel and describe any 3 of them in your
+own words.
+5 superpowers of Parcel:
+
+HMR (Hot Module Replacement) - adds, or removes modules while an application is running, without a full reload.
+File watcher algorithm - File Watchers monitor directories on the file system and perform specific actions 
+when desired files appear.
+Minification - Minification is the process of minimizing code and markup in your web pages and script files.
+Image optimization
+Caching while development
+
+
+● - What is `.gitignore`? What should we add and not add into it?
+ .gitignore is the file which keeps track for what needs to be tracked in the version control by pushing it to git.
+ We should add all the auto generated file, folders to git ignore as it can be generated on the fly and hence
+ no tracking is required.
+
+● - What is the difference between `package.json` and `package-lock.json`
+Ans. Package.json is the versioning file which keeps track of all the package installed in the project. 
+package-lock.json is the file which locks the exact version of the packages getting used in the project.
+ package.json 1.this file is mandatory for every project 2.It contains basic information about the project
+ 3.Application name/version/scripts
+ package.lock.json - 1.This file is automatically generated for those operations where npm modifies either 
+ the node_module tree or package-json. 2.It is generated after an npm install
+ 3.It allows future devs & automated systems to download the same dependencies as the project.
+ 4.it also allows to go back to the past version of the dependencies without actual ‘committing the 
+ node_modules folder. 5.It records the same version of the installed packages which allows to reinstall them. Future installs wll be capable of building identical description tree.
+
+● - Why should I not modify `package-lock.json`?
+Ans. You should never modify package-lock.json file as it locks the exact compatible version getting used in
+the project. Modifying this file might create unecessary conflicts between different transitive dependencies
+in the project. Whenever we need to modify the version for any package, we should do it in package.json or by 
+running npm install specific version command.
+
+● - What is `node_modules` ? Is it a good idea to push that on git?
+Ans. node_modules is the cache for the external modules that your project depend upon. It includes all the 
+packages required for your project, and it generates on the fly when you build the project and hence,
+should not be pushed to git and should be added to .gitignore.
+
+● - What is the `dist` folder?
+Ans. dist is the production-ready compiled and distributable version of your code. 
+It gets generated when you build your project. This compiled code alone is sufficient to serve the application.
+
+● - What is `browserlists`
+A: Browserslist is a tool that allows specifying which browsers should be supported in your frontend app
+by specifying "queries" in a config file. It's used by frameworks/libraries such as React, Angular and Vue, 
+but it's not limited to them.
