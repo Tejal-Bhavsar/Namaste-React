@@ -51,3 +51,4 @@ react.development.js CDN are development dependencies which are not being used i
 react.development.js CDN is minified version of developement CDN which are suitable for production use.
 
 What is async and defer? - see my Youtube video ;) https://www.youtube.com/watch?v=IrHmpdORLu8
+notes - https://adityasoni9727.notion.site/Notes-d12ffbaa85c34d09bbd17bc02e7b35ec credits Aditya Soni.
