@@ -1,60 +1,92 @@
-import React from 'react'
-import RestrontCard from './RestrontCard'
-import { restaurantList } from '../config'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from "react"
+import { restaurantList } from "../config"
+import RestrontCard from "./RestrontCard"
+import Shimmer from "./Shimmer"
+import axios from "axios"
 
-export default function Body() {
-  const [search, setSearch ] = useState('')
-  const [restaurant, setRestorant ] = useState(restaurantList)
+function filterData(searchText, restaurants) {
 
-  useEffect(() => {
-    getRestaurents();
-   }, []);
-
-   //async
-
-    async function getRestaurents() {
-        //API Call
-      const data = await axios(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.6107101&lng=88.42706020000001&page_type=DESKTOP_WEB_LISTING"
-      );
-      const json = await (data).json();
-      //console.log(json);
-      //optional chaining
-      // setAllRestaurents(json?.data?.cards[2]?.data?.data?.cards)
-      // setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards)
+    const filteredData = restaurants.filter((restaurant) => {
+        return restaurant.data.name.toLowerCase().includes(searchText.toLowerCase())
     }
+    )
 
-  const filterRestorant = (search, restaurant) => {
-     let data =  restaurant.filter((item) => search.toLowerCase() == item.data.name.toLowerCase())
-     return data
+    return filteredData
+
+}
+
+const Body = () => {
+
+    // let searchTxt = "Empire"
+
+    const [searchText, setSearchText] = useState("")
+
+    const [allRestaurants, setAllRestaurants] = useState([])
+    const [filteredRestaurants, setFilteredRestaurants] = useState([])
+
+    // empty dependency array => once after initial render
+    // dependency array [searchText] => once after initial render + everytime after re-rendering(searchText changes) 
+    // no dependency array => everytime after rendering
+    useEffect(() => {
+        //Call API   
+        getRestaurantList()
+        console.log("useEffect called")
+    }, [searchText])
+
+    async function getRestaurantList() {
+        try{
+            const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.992001&lng=77.534175&page_type=DESKTOP_WEB_LISTING")
+            const jsonData = await data.json()
+            console.log(jsonData)
+            setAllRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards)
+            setFilteredRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards)
+        }
+        catch(error){
+            console.log(error)
+        }
+     
   }
 
-  return (
-    <>
-     <input 
-      type='text'
-      className='search-input'
-      placeholder='search restorants here'
-      value={search}
-      onChange={(e) => {
-        setSearch(e.target.value)
-      }}
-      />
-      <button
-      onClick={() => {
-      let data = filterRestorant(search, restaurant)
-       setRestorant(data)
-      }}
-      >Search</button>
-     <div className="restaurant-list">
-      
-            { restaurant.map((restorant) => {
-                return <RestrontCard {...restorant.data} />
-            })}
-    </div>
-    </>
-     
-  )
+  console.log("render called")
+
+  //Early return : not rendering component
+  if (!allRestaurants)
+      return <h1>No restaurants data : Initial Loading...</h1>
+
+  // if (filteredRestaurants.length === 0)
+  //     return <h1>No restaurants matched your search!</h1>
+  //Conditional rendering
+  // if restaurants is empty => show Shimmer UI
+  // if restaurants is not empty ==> show Actual UI
+
+  return (allRestaurants.length === 0) ? <Shimmer /> : (
+      <>
+          <div className="search-container">
+              <input type="text" className="search-input" placeholder="Search"
+                  value={searchText} onChange={(e) =>
+                      setSearchText(e.target.value)} />
+              <button className="search-btn" onClick={() => {
+                  //Filter the data
+                  const data = filterData(searchText, allRestaurants)
+                  //Update the restaurant list  
+                  setFilteredRestaurants(data)
+
+              }}>Search</button>
+
+          </div>
+          <div className="restaurant-list">
+          {
+                    /**
+                     * Wrte logic to filter when search results are not found
+                     */
+                    (filteredRestaurants.length === 0) ? <h1>No Search results!</h1> :
+                        filteredRestaurants.map((restaurant) => {
+                            return <RestrontCard {...restaurant.data} key={restaurant.data.id} />
+                        })
+                }
+            </div>
+        </>
+    )
 }
+
+export default Body
